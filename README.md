@@ -16,14 +16,15 @@ The included VoiceAttack profile should offer the full functionality and import 
 4. Copy `EDDB_Scraper.dll` and `HtmlAgilityPack.dll` to `C:\Program Files (x86)\VoiceAttack\Apps\EDDB_Scraper`
 5. Import `EDDB_Scraper-Profile.vap`
 
-    a. Keybinding commands are identical to [HCS](http://www.hcsvoicepacks.com/) profiles so skip import of those if you use it
+    a. Keybinding commands are identical to [HCS](http://www.hcsvoicepacks.com/) profiles so you can skip import of those if you use. Key commands are referenced by name for easy import, see below for list.
 
 ##### Method 2
+
 1. Download compiled plugin from [Releases](https://github.com/SavageCore/EDDB_Scraper/releases) page
 2. Extract and copy `EDDB_Scraper.dll` and `HtmlAgilityPack.dll` to `C:\Program Files (x86)\VoiceAttack\Apps\EDDB_Scraper`
 3. Import `EDDB_Scraper-Profile.vap`
 
-    a. Keybinding commands are identical to [HCS](http://www.hcsvoicepacks.com/) profiles so skip import those if you use it
+    a. Keybinding commands are identical to [HCS](http://www.hcsvoicepacks.com/) profiles so you can skip import of those if you use. Key commands are referenced by name for easy import, see below for list.
 
 ## How to use
 
@@ -34,3 +35,23 @@ The included VoiceAttack profile should offer the full functionality and import 
 5. Done - VA should open Galaxy map, search for System, open System Map and finally plot route to station
 
 If you forget which item you should buy at current station just say `What should I buy next`
+
+## Commands
+
+You will need to import or have commands set up with the following names to press in-game keys
+
+```
+((UI Accept))
+
+((UI Down))
+
+((UI Left))
+
+((UI Next))
+
+((UI Right))
+
+((System Map))
+
+((Galaxy Map))
+```
