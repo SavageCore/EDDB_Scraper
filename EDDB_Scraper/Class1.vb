@@ -37,10 +37,10 @@ Public Class EDDB_Scraper
             Dim stationName As String
             Dim postitionFromStar As Integer
 
-            ' Get System1 Name
+            ' Get System 1 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-left')]/a[contains(@href,'system')]")
                 textValues.Add("EDLP_System1", node.ChildNodes(0).InnerHtml)
-                ' Get ID for System1
+                ' Get ID for System 1
                 systemID = getSystemID(node.Attributes("href").Value)
                 textValues.Add("EDLP_System1_id", getSystemID(systemID))
             Next
@@ -48,29 +48,29 @@ Public Class EDDB_Scraper
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-left')]/a[contains(@href,'station')]")
                 stationName = node.ChildNodes(0).InnerHtml
                 textValues.Add("EDLP_Station1", stationName)
-                ' Get position from star
+                ' Get Station 2 order from star
                 postitionFromStar = getStationListByDistance(systemID, stationName)
                 intValues.Add("EDLP_Station1Distance", postitionFromStar)
             Next
-            ' Get System2 Name
+            ' Get System 2 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-right')]/a[contains(@href,'system')]")
                 textValues.Add("EDLP_System2", node.ChildNodes(0).InnerHtml)
-                ' Get ID for System2
+                ' Get ID for System 2
                 systemID = getSystemID(node.Attributes("href").Value)
                 textValues.Add("EDLP_System2_id", getSystemID(systemID))
             Next
-            ' Get Station2 Name
+            ' Get Station 2 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-right')]/a[contains(@href,'station')]")
                 stationName = node.ChildNodes(0).InnerHtml
                 textValues.Add("EDLP_Station2", stationName)
-                ' Get position from star
+                ' Get Station 2 order from star
                 intValues.Add("EDLP_Station2Distance", getStationListByDistance(systemID, stationName))
             Next
-            ' Get Buy1 Name
+            ' Get name of item to buy at Station 1
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("(//div[contains(@class,'loop-actions')]//a[contains(@href,'commodity')])[1]")
                 textValues.Add("EDLP_Buy1", node.ChildNodes(0).InnerHtml)
             Next
-            ' Get Buy1 Name
+            ' Get name of item to buy at Station 2
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("(//div[contains(@class,'loop-actions')]//a[contains(@href,'commodity')])[2]")
                 textValues.Add("EDLP_Buy2", node.ChildNodes(0).InnerHtml)
             Next
