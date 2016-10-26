@@ -1,7 +1,7 @@
 # EDDB_Scraper
 Voice Attack Plugin to scrape [eddb.io](https://eddb.io/) for information regarding a specific two station loop.
 
-Requires [EDDI](https://github.com/cmdrmcdonald/EliteDangerousDataProvider), [Html Agility Pack](https://htmlagilitypack.codeplex.com/)
+Requires [EDDI](https://github.com/cmdrmcdonald/EliteDangerousDataProvider) version 2+, [Html Agility Pack](https://htmlagilitypack.codeplex.com/) and VoiceAttack version 1.5.9+
 
 The included VoiceAttack profile should offer the full functionality and import just fine into exisitng profiles.
 
