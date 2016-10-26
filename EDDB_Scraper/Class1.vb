@@ -40,6 +40,7 @@ Public Class EDDB_Scraper
             Dim systemID As Integer
             Dim stationName As String
             Dim postitionFromStar As Integer
+            Dim postitionFromStar2 As Integer
 
             ' Get System 1 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-left')]/a[contains(@href,'system')]")
@@ -53,8 +54,10 @@ Public Class EDDB_Scraper
                 stationName = node.ChildNodes(0).InnerHtml
                 vaProxy.SetText("EDLP_Station1", stationName)
                 ' Get Station 2 order from star
-                postitionFromStar = getStationListByDistance(systemID, stationName)
-                vaProxy.SetText("EDLP_Station1Distance", postitionFromStar)
+                If (getStationListByDistance(vaProxy, systemID, stationName)) Then
+                    postitionFromStar = getStationListByDistance(vaProxy, systemID, stationName)
+                    vaProxy.SetInt("EDLP_Station1Distance", postitionFromStar)
+                End If
             Next
             ' Get System 2 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-right')]/a[contains(@href,'system')]")
@@ -68,7 +71,10 @@ Public Class EDDB_Scraper
                 stationName = node.ChildNodes(0).InnerHtml
                 vaProxy.SetText("EDLP_Station2", stationName)
                 ' Get Station 2 order from star
-                vaProxy.SetInt("EDLP_Station2Distance", getStationListByDistance(systemID, stationName))
+                If (getStationListByDistance(vaProxy, systemID, stationName)) Then
+                    postitionFromStar2 = getStationListByDistance(vaProxy, systemID, stationName)
+                    vaProxy.SetInt("EDLP_Station2Distance", postitionFromStar2)
+                End If
             Next
             ' Get name of item to buy at Station 1
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("(//div[contains(@class,'loop-actions')]//a[contains(@href,'commodity')])[1]")
@@ -91,19 +97,30 @@ Public Class EDDB_Scraper
         Return False
     End Function
 
-    Public Shared Function getStationListByDistance(systemID As Integer, stationName As String)
+    Public Shared Function getStationListByDistance(vaProxy As Object, systemID As Integer, stationName As String)
         Dim EDDBSystemURL As String = "https://eddb.io/system/"
         Dim StationURL As String = EDDBSystemURL & Convert.ToString(systemID)
         Dim Web = New HtmlWeb()
         Dim Doc = Web.Load(StationURL)
         Dim dictionary = New Dictionary(Of String, Integer)()
-
+        Dim distance As Int32
+        Dim cleanValue As String
         For Each stationNode As HtmlNode In Doc.DocumentNode.SelectNodes("//tr[count(preceding-sibling::tr[@class=""stationTypeGroup""])=1]//td")
             Dim expression As New Regex("([a-zA-Z']+ [a-zA-Z']+)\s*([ML])\s*([0-9,]+) ls")
             Dim results = expression.Matches(stationNode.InnerText)
 
             For Each match As Match In results
-                dictionary.Add(match.Groups(1).Value, Int32.Parse(match.Groups(3).Value))
+                If match.Groups(1).Value IsNot Nothing And match.Groups(3).Value IsNot Nothing Then
+                    cleanValue = match.Groups(3).Value.Replace(",", "")
+                    If Int32.TryParse(cleanValue, distance) Then
+                        dictionary.Add(match.Groups(1).Value, Int32.Parse(cleanValue))
+                    Else
+                        vaProxy.WriteToLog("EDDB Scraper Error: Cannot detect distance for " + stationName + " (" + cleanValue + ")", "red")
+                        Return False
+                    End If
+
+                End If
+
             Next
         Next
 
