@@ -16,19 +16,23 @@ Public Class EDDB_Scraper
         Return String.Empty
     End Function
 
-    Public Shared Sub VA_Init1(ByRef state As Dictionary(Of String, Object), ByRef smallIntValues As Dictionary(Of String, Int16?), ByRef textValues As Dictionary(Of String, String), ByRef intValues As Dictionary(Of String, Integer?), ByRef decimalValues As Dictionary(Of String, Decimal?), ByRef booleanValues As Dictionary(Of String, Boolean?), ByRef extendedValues As Dictionary(Of String, Object))
-        textValues.Add("EDLP_Version", "0.1.0")
-        textValues.Add("EDLP_Initialised", "EDDB Loop Scrape " + textValues("EDLP_Version") + " Loaded")
-    End Sub
-
-    Public Shared Sub VA_Exit1(ByRef state As Dictionary(Of String, Object))
+    Public Shared Sub VA_StopCommand()
 
     End Sub
 
-    Public Shared Sub VA_Invoke1(context As String, ByRef state As Dictionary(Of String, Object), ByRef smallIntValues As Dictionary(Of String, Int16?), ByRef textValues As Dictionary(Of String, String), ByRef intValues As Dictionary(Of String, Integer?), ByRef decimalValues As Dictionary(Of String, Decimal?), ByRef booleanValues As Dictionary(Of String, Boolean?), ByRef extendedValues As Dictionary(Of String, Object))
+    Public Shared Sub VA_Init1(vaProxy As Object)
+        vaProxy.SetText("EDLP_Version", "0.2.0")
+        vaProxy.SetText("EDLP_Initialised", "EDDB Loop Scrape " + vaProxy.GetText("EDLP_Version") + " Loaded")
+    End Sub
 
-        If (context.Contains("loop config")) Then
-            Dim LoopID = intValues("EDLP_LoopID")
+    Public Shared Sub VA_Exit1(vaProxy As Object)
+
+    End Sub
+
+    Public Shared Sub VA_Invoke1(vaProxy As Object)
+
+        If (vaProxy.Context.Contains("loop config")) Then
+            Dim LoopID = vaProxy.GetInt("EDLP_LoopID")
             Dim EDDBLoopURL = "https://eddb.io/trade/loop/"
             Dim url = EDDBLoopURL + LoopID.ToString
             Dim Web = New HtmlWeb()
@@ -39,40 +43,40 @@ Public Class EDDB_Scraper
 
             ' Get System 1 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-left')]/a[contains(@href,'system')]")
-                textValues.Add("EDLP_System1", node.ChildNodes(0).InnerHtml)
+                vaProxy.SetText("EDLP_System1", node.ChildNodes(0).InnerHtml)
                 ' Get ID for System 1
                 systemID = getSystemID(node.Attributes("href").Value)
-                textValues.Add("EDLP_System1_id", getSystemID(systemID))
+                vaProxy.SetText("EDLP_System1_id", getSystemID(systemID))
             Next
             ' Get Station1 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-left')]/a[contains(@href,'station')]")
                 stationName = node.ChildNodes(0).InnerHtml
-                textValues.Add("EDLP_Station1", stationName)
+                vaProxy.SetText("EDLP_Station1", stationName)
                 ' Get Station 2 order from star
                 postitionFromStar = getStationListByDistance(systemID, stationName)
-                intValues.Add("EDLP_Station1Distance", postitionFromStar)
+                vaProxy.SetText("EDLP_Station1Distance", postitionFromStar)
             Next
             ' Get System 2 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-right')]/a[contains(@href,'system')]")
-                textValues.Add("EDLP_System2", node.ChildNodes(0).InnerHtml)
+                vaProxy.SetText("EDLP_System2", node.ChildNodes(0).InnerHtml)
                 ' Get ID for System 2
                 systemID = getSystemID(node.Attributes("href").Value)
-                textValues.Add("EDLP_System2_id", getSystemID(systemID))
+                vaProxy.SetText("EDLP_System2_id", getSystemID(systemID))
             Next
             ' Get Station 2 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-right')]/a[contains(@href,'station')]")
                 stationName = node.ChildNodes(0).InnerHtml
-                textValues.Add("EDLP_Station2", stationName)
+                vaProxy.SetText("EDLP_Station2", stationName)
                 ' Get Station 2 order from star
-                intValues.Add("EDLP_Station2Distance", getStationListByDistance(systemID, stationName))
+                vaProxy.SetInt("EDLP_Station2Distance", getStationListByDistance(systemID, stationName))
             Next
             ' Get name of item to buy at Station 1
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("(//div[contains(@class,'loop-actions')]//a[contains(@href,'commodity')])[1]")
-                textValues.Add("EDLP_Buy1", node.ChildNodes(0).InnerHtml)
+                vaProxy.SetText("EDLP_Buy1", node.ChildNodes(0).InnerHtml)
             Next
             ' Get name of item to buy at Station 2
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("(//div[contains(@class,'loop-actions')]//a[contains(@href,'commodity')])[2]")
-                textValues.Add("EDLP_Buy2", node.ChildNodes(0).InnerHtml)
+                vaProxy.SetText("EDLP_Buy2", node.ChildNodes(0).InnerHtml)
             Next
         End If
 
