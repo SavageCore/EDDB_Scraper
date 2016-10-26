@@ -31,7 +31,7 @@ Public Class EDDB_Scraper
 
     Public Shared Sub VA_Invoke1(vaProxy As Object)
 
-        If (vaProxy.Context.Contains("loop config")) Then
+        If (vaProxy.Context = "loop config") Then
             Dim LoopID = vaProxy.GetInt("EDLP_LoopID")
             Dim EDDBLoopURL = "https://eddb.io/trade/loop/"
             Dim url = EDDBLoopURL + LoopID.ToString
