@@ -66,6 +66,8 @@ You will need to import or have commands set up with the following names to pres
 | {INT:EDLP_System2_id} | System 1 EDDB ID
 | {TXT:EDLP_Station1} | System 1 station
 | {TXT:EDLP_Station2} | System 2 station
+| {INT:EDLP_Station1_id} | Station 1 EDDB ID
+| {INT:EDLP_Station2_id} | Station 2 EDDB ID
 | {INT:EDLP_Station1Distance} | Station 1 position from sun
 | {INT:EDLP_Station2Distance} | Station 1 position from sun
 | {TXT:EDLP_Buy1} | Item to buy at system 1

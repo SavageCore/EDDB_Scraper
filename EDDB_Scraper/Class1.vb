@@ -39,6 +39,7 @@ Public Class EDDB_Scraper
             Dim Doc = Web.Load(url)
             Dim systemID As Integer
             Dim stationName As String
+            Dim stationID As Integer
             Dim postitionFromStar As Integer
             Dim postitionFromStar2 As Integer
 
@@ -46,13 +47,15 @@ Public Class EDDB_Scraper
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-left')]/a[contains(@href,'system')]")
                 vaProxy.SetText("EDLP_System1", node.ChildNodes(0).InnerHtml)
                 ' Get ID for System 1
-                systemID = getSystemID(node.Attributes("href").Value)
+                systemID = getID(node.Attributes("href").Value)
                 vaProxy.SetInt("EDLP_System1_id", systemID)
             Next
             ' Get Station1 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-left')]/a[contains(@href,'station')]")
                 stationName = node.ChildNodes(0).InnerHtml
+                stationID = getID(node.Attributes("href").Value)
                 vaProxy.SetText("EDLP_Station1", stationName)
+                vaProxy.SetInt("EDLP_Station1_id", stationID)
                 ' Get Station 2 order from star
                 If (getStationListByDistance(vaProxy, systemID, stationName)) Then
                     postitionFromStar = getStationListByDistance(vaProxy, systemID, stationName)
@@ -63,13 +66,15 @@ Public Class EDDB_Scraper
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-right')]/a[contains(@href,'system')]")
                 vaProxy.SetText("EDLP_System2", node.ChildNodes(0).InnerHtml)
                 ' Get ID for System 2
-                systemID = getSystemID(node.Attributes("href").Value)
+                systemID = getID(node.Attributes("href").Value)
                 vaProxy.SetInt("EDLP_System2_id", systemID)
             Next
             ' Get Station 2 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-right')]/a[contains(@href,'station')]")
                 stationName = node.ChildNodes(0).InnerHtml
+                stationID = getID(node.Attributes("href").Value)
                 vaProxy.SetText("EDLP_Station2", stationName)
+                vaProxy.SetInt("EDLP_Station2_id", stationID)
                 ' Get Station 2 order from star
                 If (getStationListByDistance(vaProxy, systemID, stationName)) Then
                     postitionFromStar2 = getStationListByDistance(vaProxy, systemID, stationName)
@@ -88,7 +93,7 @@ Public Class EDDB_Scraper
 
     End Sub
 
-    Public Shared Function getSystemID(href As String) As Integer
+    Public Shared Function getID(href As String) As Integer
         Dim expression As New Regex("\d+")
         Dim results = expression.Matches(href)
         For Each match As Match In results
