@@ -47,7 +47,7 @@ Public Class EDDB_Scraper
                 vaProxy.SetText("EDLP_System1", node.ChildNodes(0).InnerHtml)
                 ' Get ID for System 1
                 systemID = getSystemID(node.Attributes("href").Value)
-                vaProxy.SetText("EDLP_System1_id", getSystemID(systemID))
+                vaProxy.SetInt("EDLP_System1_id", getSystemID(systemID))
             Next
             ' Get Station1 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-left')]/a[contains(@href,'station')]")
@@ -64,7 +64,7 @@ Public Class EDDB_Scraper
                 vaProxy.SetText("EDLP_System2", node.ChildNodes(0).InnerHtml)
                 ' Get ID for System 2
                 systemID = getSystemID(node.Attributes("href").Value)
-                vaProxy.SetText("EDLP_System2_id", getSystemID(systemID))
+                vaProxy.SetInt("EDLP_System2_id", getSystemID(systemID))
             Next
             ' Get Station 2 Name
             For Each node As HtmlNode In Doc.DocumentNode.SelectNodes("//div[contains(@class,'loop-station-right')]/a[contains(@href,'station')]")
