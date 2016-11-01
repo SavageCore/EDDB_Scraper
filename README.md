@@ -64,8 +64,8 @@ You will need to import or have commands set up with the following names to pres
 | {TXT:EDLP_System2} | Right hand system name
 | {INT:EDLP_System1_id} | System 1 EDDB ID
 | {INT:EDLP_System2_id} | System 2 EDDB ID
-| {TXT:EDLP_Station1} | System 1 station
-| {TXT:EDLP_Station2} | System 2 station
+| {TXT:EDLP_Station1} | System 1 station name
+| {TXT:EDLP_Station2} | System 2 station name
 | {INT:EDLP_Station1_id} | Station 1 EDDB ID
 | {INT:EDLP_Station2_id} | Station 2 EDDB ID
 | {INT:EDLP_Station1Distance} | Station 1 position from sun
